@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             btn_create_new_wallet_compat -> {
                 alertDialog.setCanceledOnTouchOutside(false)
+                alertDialog.setCancelable(false)
                 alertDialog.show()
                 KinBaseCompatManager.createNewWallet { content ->
                     tv_log.text = content
