@@ -2,7 +2,6 @@ package com.example.kincompattest
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -10,19 +9,17 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private val alertDialog by lazy {
-        AlertDialog.Builder(this).setMessage("On Adding New Account......").create()
+        AlertDialog.Builder(this)
+            .setMessage("On Adding New Account......")
+            .setCancelable(false)
+            .create()
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initView()
         initListener()
-    }
-
-    private fun initView() {
-        tv_log.movementMethod = ScrollingMovementMethod.getInstance()
     }
 
     private fun initListener() {
@@ -52,17 +49,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             btn_clear_all_wallet -> {
-                KinBaseCompatManager.clearAllWallets{
+                KinBaseCompatManager.clearAllWallets {
                     tv_log.text = "Has been clearing all accounts."
                 }
             }
             btn_print_first_wallet_data -> {
-                KinBaseCompatManager.printFirstWalletData{
+                KinBaseCompatManager.printFirstWalletData {
                     tv_log.text = it
                 }
             }
             btn_print_all_wallet_data -> {
-                KinBaseCompatManager.printAllWalletData(tv_log)
+                alertDialog.setCanceledOnTouchOutside(false)
+                alertDialog.show()
+                KinBaseCompatManager.printAllWalletData {
+                    tv_log.text = it
+                    runOnUiThread { alertDialog.hide() }
+                }
             }
         }
     }
