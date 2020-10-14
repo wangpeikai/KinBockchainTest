@@ -1,0 +1,4 @@
+include ':Tools'
+include ':kincompattest'
+include ':app'
+rootProject.name = "KinTest"
