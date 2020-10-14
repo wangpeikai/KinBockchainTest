@@ -107,10 +107,10 @@ object KinBaseCompatManager {
 
     }
 
-    fun printAllWalletData(view: TextView) {
+    fun printAllWalletData(method: (content: String) -> Unit) {
         if (!testClient.hasAccount()) {
             LogUtils.e(msg = NO_ACCOUNT)
-            view.text = NO_ACCOUNT
+            method(NO_ACCOUNT)
             return
         }
 
@@ -130,7 +130,7 @@ object KinBaseCompatManager {
                                 i
                             ).export("Tpt#1234")}\n\n\n"
                 }
-                view.text = str
+                method(str)
             }
         }
     }

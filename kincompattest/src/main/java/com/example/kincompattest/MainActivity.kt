@@ -17,12 +17,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initView()
         initListener()
-    }
-
-    private fun initView() {
-        tv_log.movementMethod = ScrollingMovementMethod.getInstance()
     }
 
     private fun initListener() {
@@ -45,6 +40,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             btn_create_new_wallet_compat -> {
                 alertDialog.setCanceledOnTouchOutside(false)
+                alertDialog.setCancelable(false)
                 alertDialog.show()
                 KinBaseCompatManager.createNewWallet { content ->
                     tv_log.text = content
@@ -52,17 +48,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             btn_clear_all_wallet -> {
-                KinBaseCompatManager.clearAllWallets{
+                KinBaseCompatManager.clearAllWallets {
                     tv_log.text = "Has been clearing all accounts."
                 }
             }
             btn_print_first_wallet_data -> {
-                KinBaseCompatManager.printFirstWalletData{
+                KinBaseCompatManager.printFirstWalletData {
                     tv_log.text = it
                 }
             }
             btn_print_all_wallet_data -> {
-                KinBaseCompatManager.printAllWalletData(tv_log)
+                alertDialog.setCanceledOnTouchOutside(false)
+                alertDialog.setCancelable(false)
+                alertDialog.show()
+                KinBaseCompatManager.printAllWalletData {
+                    tv_log.text = it
+                    runOnUiThread { alertDialog.hide() }
+                }
             }
         }
     }
